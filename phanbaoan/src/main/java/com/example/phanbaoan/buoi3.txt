@@ -19,3 +19,65 @@ Stored Procedure
     Stored Procedure hoạt động như một hàm trong lập trình:
     Khai báo: Định nghĩa logic (các câu lệnh SQL) cần thực hiện.
     Thực thi: Gọi thủ tục và truyền tham số (nếu có).
+
+
+
+
+    data 
+
+
+    product {
+        productId,int
+        image,varchar
+        name,nvarchar
+        description,nvarchar
+        categoryId,int
+        price,float
+        discount,
+        brandId,int
+        }
+    category{
+        categoriId,int
+        name,nvarchar
+        parentId,int
+        }
+    brand(
+        brandId,int
+        image,varchar
+        name,nvarchar
+        )
+    user{
+        userId,int
+        name,nvarchar
+        role,int
+        phone,varchar
+        adress,nvarchar
+        email,varchar
+        password,varchar
+        }
+    banner{
+        bannerid,int
+        name,nvarchar
+        image,varchar
+        }
+    order{
+        oredrId,int
+        UserId,int
+        email,varchar
+        address,nvarchar
+        phone,varchar
+        totalPrice,float
+        date,date
+        }
+    orderdetail{
+        oredrId,int
+        productId,int
+        price,float
+        qty,int 
+        }
+    Payment{
+        paymentId,int
+        OrderId,int
+        methodId,
+        }
+    
