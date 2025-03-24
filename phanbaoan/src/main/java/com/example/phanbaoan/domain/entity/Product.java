@@ -1,28 +1,45 @@
-package com.example.phanbaoan.domain;
+package com.example.phanbaoan.domain.entity;
 
+import jakarta.persistence.*;
+
+@Entity
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int productId;
-    private String image;
-    private String name;
-    private String description;
-    private int categoryId;
-    private float price;
-    private float discount;
-    private int brandId;
 
+    private String image;
+
+    private String name;
+
+    private String description;
+
+    private float price;
+
+    private float discount;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id", referencedColumnName = "brandId", nullable = false)
+    private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "categoryId", nullable = false)
+    private Category category;
+
+    
     // Constructor không tham số
     public Product() {}
 
     // Constructor đầy đủ tham số
-    public Product(int productId, String image, String name, String description, int categoryId, float price, float discount, int brandId) {
+    public Product(int productId, String image, String name, String description, float price, float discount, Brand brand, Category category) {
         this.productId = productId;
         this.image = image;
         this.name = name;
         this.description = description;
-        this.categoryId = categoryId;
         this.price = price;
         this.discount = discount;
-        this.brandId = brandId;
+        this.brand = brand;
+        this.category = category;
     }
 
     // Getter và Setter
@@ -58,14 +75,6 @@ public class Product {
         this.description = description;
     }
 
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
     public float getPrice() {
         return price;
     }
@@ -82,12 +91,20 @@ public class Product {
         this.discount = discount;
     }
 
-    public int getBrandId() {
-        return brandId;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setBrandId(int brandId) {
-        this.brandId = brandId;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     // Phương thức toString
@@ -98,10 +115,10 @@ public class Product {
                 ", image='" + image + '\'' +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", categoryId=" + categoryId +
                 ", price=" + price +
                 ", discount=" + discount +
-                ", brandId=" + brandId +
+                ", brand=" + (brand != null ? brand.getBrandId() : "null") +
+                ", category=" + (category != null ? category.getCategoryId() : "null") +
                 '}';
     }
 }

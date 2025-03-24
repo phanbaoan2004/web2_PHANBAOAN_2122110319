@@ -1,20 +1,38 @@
-package com.example.phanbaoan.domain;
+package com.example.phanbaoan.domain.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "User")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @Column(nullable = false)
     private int role;
+
+    @Column(nullable = false, length = 15)
     private String phone;
+
+    @Column(nullable = false, length = 200)
     private String address;
+
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
+
+    @Column(nullable = false, length = 255)
     private String password;
 
     // Constructor không tham số
     public User() {}
 
     // Constructor đầy đủ tham số
-    public User(int userId, String name, int role, String phone, String address, String email, String password) {
-        this.userId = userId;
+    public User(String name, int role, String phone, String address, String email, String password) {
         this.name = name;
         this.role = role;
         this.phone = phone;
@@ -80,7 +98,6 @@ public class User {
         this.password = password;
     }
 
-    // Phương thức toString
     @Override
     public String toString() {
         return "User{" +

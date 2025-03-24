@@ -1,17 +1,29 @@
-package com.example.phanbaoan.domain;
+package com.example.phanbaoan.domain.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "payment")
 public class Payment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payment_id")
     private int paymentId;
-    private int orderId;
+
+    @ManyToOne
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @Column(name = "method_id", nullable = false)
     private int methodId;
 
     // Constructor không tham số
     public Payment() {}
 
     // Constructor đầy đủ tham số
-    public Payment(int paymentId, int orderId, int methodId) {
+    public Payment(int paymentId, Order order, int methodId) {
         this.paymentId = paymentId;
-        this.orderId = orderId;
+        this.order = order;
         this.methodId = methodId;
     }
 
@@ -24,12 +36,12 @@ public class Payment {
         this.paymentId = paymentId;
     }
 
-    public int getOrderId() {
-        return orderId;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
     public int getMethodId() {
@@ -45,7 +57,7 @@ public class Payment {
     public String toString() {
         return "Payment{" +
                 "paymentId=" + paymentId +
-                ", orderId=" + orderId +
+                ", order=" + (order != null ? order.getOrderId() : "null") +
                 ", methodId=" + methodId +
                 '}';
     }

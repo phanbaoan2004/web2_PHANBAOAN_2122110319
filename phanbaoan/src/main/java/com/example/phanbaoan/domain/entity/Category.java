@@ -1,9 +1,22 @@
-package com.example.phanbaoan.domain;
+package com.example.phanbaoan.domain.entity;
 
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
+
     private String name;
+
     private int parentId;
+
+  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Product> products = new ArrayList<>();
 
     // Constructor không tham số
     public Category() {}
@@ -38,6 +51,14 @@ public class Category {
 
     public void setParentId(int parentId) {
         this.parentId = parentId;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     // Phương thức toString
