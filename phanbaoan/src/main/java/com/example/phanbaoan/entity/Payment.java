@@ -1,64 +1,34 @@
 package com.example.phanbaoan.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence. Entity;
+import jakarta.persistence. GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence. Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence. Table;
+import jakarta. validation. constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok. NoArgsConstructor;
 
 @Entity
-@Table(name = "payment")
+@Data
+@Table(name = "payments")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Payment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payment_id")
-    private int paymentId;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id", nullable = false)
-    private Order order;
+@Id
+@GeneratedValue(strategy = GenerationType. IDENTITY)
+private Long paymentId;
 
-    @Column(name = "method_id", nullable = false)
-    private int methodId;
+@OneToOne(mappedBy = "payment", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+private Order order;
 
-    // Constructor không tham số
-    public Payment() {}
+@NotBlank
+@Size(min = 4, message = "Payment method must contain atleast 4 characters")
+private String paymentMethod;
 
-    // Constructor đầy đủ tham số
-    public Payment(int paymentId, Order order, int methodId) {
-        this.paymentId = paymentId;
-        this.order = order;
-        this.methodId = methodId;
-    }
-
-    // Getter và Setter
-    public int getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(int paymentId) {
-        this.paymentId = paymentId;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public int getMethodId() {
-        return methodId;
-    }
-
-    public void setMethodId(int methodId) {
-        this.methodId = methodId;
-    }
-
-    // Phương thức toString
-    @Override
-    public String toString() {
-        return "Payment{" +
-                "paymentId=" + paymentId +
-                ", order=" + (order != null ? order.getOrderId() : "null") +
-                ", methodId=" + methodId +
-                '}';
-    }
 }

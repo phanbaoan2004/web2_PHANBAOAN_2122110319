@@ -1,65 +1,65 @@
 package com.example.phanbaoan.controller;
 
-import com.example.phanbaoan.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.phanbaoan.config.AppConstants;
+import com.example.phanbaoan.payloads.UserDTO;
+import com.example.phanbaoan.payloads.UserResponse;
 import com.example.phanbaoan.service.UserService;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+// import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
+@SecurityRequirement(name = "E-Commerce Application")
 public class UserController {
-
     @Autowired
     private UserService userService;
 
-    // Lấy danh sách tất cả người dùng
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        if (users.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(users);
+    @GetMapping("/admin/users")
+    public ResponseEntity<UserResponse> getUsers(
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_USERS_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIR, required = false) String sortOrder) {
+        UserResponse userResponse = userService.getAllUsers(pageNumber, pageSize, sortBy,
+                sortOrder);
+        return new ResponseEntity<UserResponse>(userResponse, HttpStatus.FOUND);
     }
 
-    // Lấy thông tin người dùng theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
-        User user = userService.getUserById(id);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(user);
+    @GetMapping("/public/users/{userId}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long userId) {
+        UserDTO user = userService.getUserById(userId);
+        return new ResponseEntity<UserDTO>(user, HttpStatus.FOUND);
     }
 
-    // Thêm người dùng mới
-    @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User savedUser = userService.addUser(user);
-        return ResponseEntity.ok(savedUser);
+    @GetMapping("/public/users/email/{email}")
+    public ResponseEntity<UserDTO> getUserEmail(@PathVariable String email) {
+        UserDTO user = userService.getUserByEmail(email);
+
+        return new ResponseEntity<UserDTO>(user, HttpStatus.OK);
     }
 
-    // Cập nhật người dùng
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User newUser) {
-        User updatedUser = userService.updateUser(id, newUser);
-        if (updatedUser == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedUser);
+    @PutMapping("/public/users/{userId}")
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
+        UserDTO updatedUser = userService.updateUser(userId, userDTO);
+        return new ResponseEntity<UserDTO>(updatedUser, HttpStatus.OK);
     }
 
-    // Xóa người dùng theo ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable int id) {
-        boolean isDeleted = userService.deleteUserById(id);
-        if (!isDeleted) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/admin/users/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        String status = userService.deleteUser(userId);
+        return new ResponseEntity<String>(status, HttpStatus.OK);
     }
 }

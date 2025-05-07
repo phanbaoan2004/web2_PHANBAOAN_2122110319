@@ -13,17 +13,16 @@ public class Brand {
     private String image;
     private String name;
 
-    // Constructor không tham số
+ 
     public Brand() {}
 
-    // Constructor đầy đủ tham số
+
     public Brand(int brandId, String image, String name) {
         this.brandId = brandId;
         this.image = image;
         this.name = name;
     }
 
-    // Getter và Setter
     public int getBrandId() {
         return brandId;
     }
@@ -48,7 +47,6 @@ public class Brand {
         this.name = name;
     }
 
-    // Phương thức toString
     @Override
     public String toString() {
         return "Brand{" +

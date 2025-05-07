@@ -1,37 +1,19 @@
 package com.example.phanbaoan.service;
 
-import com.example.phanbaoan.entity.Order;
-import com.example.phanbaoan.repository.OrderRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class OrderService {
+import com.example.phanbaoan.payloads.OrderDTO;
+import com. example.phanbaoan.payloads.OrderResponse;
 
-    @Autowired
-    private OrderRepository orderRepository;
+public interface OrderService {
 
-    // Lấy tất cả orders
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
-    }
+OrderDTO placeOrder(String emailId, Long cartId, String paymentMethod);
 
-    // Lấy order theo ID
-    public Optional<Order> getOrderById(int orderId) {
-        return orderRepository.findById(orderId);
-    }
+OrderDTO getOrder(String emailId, Long orderId);
 
-    // Tạo mới hoặc cập nhật order
-    public Order saveOrder(Order order) {
-        return orderRepository.save(order);
-    }
+List<OrderDTO> getOrdersByUser(String emailId);
 
-    // Xóa order theo ID
-    public void deleteOrderById(int orderId) {
-        orderRepository.deleteById(orderId);
-    }
+OrderResponse getAllOrders(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+
+OrderDTO updateOrder(String emailId, Long orderId, String orderStatus);
 }

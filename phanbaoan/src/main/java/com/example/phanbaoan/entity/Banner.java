@@ -13,17 +13,15 @@ public class Banner {
     private String name;
     private String image;
 
-    // Constructor không tham số
     public Banner() {}
 
-    // Constructor đầy đủ tham số
+
     public Banner(int bannerId, String name, String image) {
         this.bannerId = bannerId;
         this.name = name;
         this.image = image;
     }
 
-    // Getter và Setter
     public int getBannerId() {
         return bannerId;
     }
@@ -48,7 +46,7 @@ public class Banner {
         this.image = image;
     }
 
-    // Phương thức toString
+
     @Override
     public String toString() {
         return "Banner{" +
